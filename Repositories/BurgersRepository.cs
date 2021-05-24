@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using burgershack.Interfaces;
 using burgershack.Models;
+using Dapper;
 
 namespace burgershack.Repositories
 {
