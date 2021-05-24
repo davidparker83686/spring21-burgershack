@@ -4,13 +4,17 @@ using burgershack.Models;
 
 namespace burgershack.Services
 {
-    public class BurgersService
+  public class BurgersService
+  {
+    internal IEnumerable<Burger> GetAll()
     {
-        internal IEnumerable<Burger> GetAll()
-        {
 
-            // TODO do this thing
-            throw new NotImplementedException();
-        }
+
+
+
+
+      // TODO do this thing
+      throw new NotImplementedException();
     }
+  }
 }
