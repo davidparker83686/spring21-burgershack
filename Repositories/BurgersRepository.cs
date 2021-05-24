@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Data;
 using burgershack.Interfaces;
-using burgershack.Models;
+
 using Dapper;
+using spring21_burgershack.Models;
 
 namespace burgershack.Repositories
 {

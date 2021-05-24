@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
+using spring21_burgershack.Services;
 
 namespace burgershack
 {
@@ -51,9 +52,11 @@ namespace burgershack
 
 
       services.AddControllers();
+      services.AddTransient<AccountsService>();
       services.AddTransient<BurgersService>();
       services.AddTransient<DrinksService>();
       services.AddTransient<SidesService>();
+      services.AddTransient<AccountsRepository>();
       services.AddTransient<BurgersRepository>();
       services.AddTransient<DrinksRepository>();
       services.AddTransient<SidesRepository>();
