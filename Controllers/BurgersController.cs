@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using burgershack.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using spring21_burgershack.Models;
 using spring21_burgershack.Services;
@@ -22,7 +25,10 @@ namespace spring21_burgershack.Controllers
     {
       try
       {
-        throw new NotImplementedException();
+        // newBurger.CreatorId = "fixthis later";
+        Burger burgers = _bugersService.Create(newBurger);
+
+        return Ok(burgers);
       }
       catch (Exception e)
       {
@@ -63,9 +69,7 @@ namespace spring21_burgershack.Controllers
     {
       try
       {
-        // why this and not teh one i wrote and y would it be id and not int id if that wat were passing it.
-
-        IEnumerable<Burger> burgers = _bugersService.GetById(id);
+        Burger burgers = _bugersService.GetById(id);
         return Ok(burgers);
       }
       catch (Exception e)

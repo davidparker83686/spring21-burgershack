@@ -29,7 +29,7 @@ namespace spring21_burgershack.Controllers
     }
 
     [HttpGet]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<Account>> Get()
     {
       try
@@ -38,8 +38,10 @@ namespace spring21_burgershack.Controllers
         // IF YOU EVER NEED THE ACTIVE USERS INFO THIS IS HOW YOU DO IT (FROM AUTH0)
 
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        if (userInfo.Id == null) { throw new Exception("No Id"); }
         Account currentUser = _accountService.GetOrCreateAccount(userInfo);
         return Ok(currentUser);
+
       }
       catch (Exception error)
       {

@@ -16,7 +16,7 @@ namespace spring21_burgershack.Repositories
 
     internal Account GetById(string id)
     {
-      string sql = "SELECT * FROM accounts WHERE id = @id";
+      string sql = "SELECT * FROM accounts WHERE id = @id;";
       return _db.QueryFirstOrDefault<Account>(sql, new { id });
     }
 
@@ -26,7 +26,7 @@ namespace spring21_burgershack.Repositories
       INSERT INTO accounts
       (id, name, picture, email)
       VALUES
-      (@Id, @Name, @Picture, @Email)";
+      (@Id, @Name, @Picture, @Email);";
       _db.Execute(sql, userInfo);
       return userInfo;
     }

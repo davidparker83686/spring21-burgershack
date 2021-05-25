@@ -24,14 +24,20 @@ namespace spring21_burgershack.Services
       throw new NotImplementedException();
     }
     // -----------------------------------------------------------------------------------------------------
-    internal IEnumerable<Burger> GetById(int id)
+    internal Burger Create(Burger newBurger)
+    {
+      Burger burgers = _burgersRepository.Create(newBurger);
+      return burgers;
+    }
+    // -----------------------------------------------------------------------------------------------------
+    internal Burger GetById(int id)
     {
       Burger burger = _burgersRepository.GetById(id);
       if (burger == null)
       {
         throw new Exception("Invalid Burger Id");
       }
-      return (IEnumerable<Burger>)burger;
+      return (Burger)burger;
     }
     // -----------------------------------------------------------------------------------------------------
 

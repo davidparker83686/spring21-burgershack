@@ -1,6 +1,6 @@
 namespace spring21_burgershack.Services
 {
-  public class ProductsService
+  public class WarehouseProductsService
   {
 
   }

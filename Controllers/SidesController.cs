@@ -57,17 +57,12 @@ namespace spring21_burgershack.Controllers
       }
     }
 
-    public ActionResult<Side> GetOne()
+    public ActionResult<Side> GetById()
     {
-      try
-      {
-        throw new NotImplementedException();
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
+      throw new NotImplementedException();
     }
+
+
 
     public ActionResult<Side> Update()
     {

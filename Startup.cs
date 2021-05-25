@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Data;
+using CodeWorks.Auth0Provider;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +26,56 @@ namespace burgershack
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      ConfigureCors(services);
+      ConfigureAuth(services);
+      services.AddControllers();
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "AmaZen", Version = "v1" });
+      });
+
+      services.AddScoped<IDbConnection>(x => CreateDbConnection());
+
+      // REPOS
+      services.AddScoped<AccountRepository>();
+      services.AddScoped<BurgersRepository>();
+      services.AddScoped<SidesRepository>();
+      services.AddScoped<DrinksRepository>();
+      services.AddScoped<WarehousesRepository>();
+      services.AddScoped<ProductsRepository>();
+      services.AddScoped<WarehouseProductsRepository>();
+
+      // BUSINESS RULES
+
+      services.AddTransient<AccountService>();
+      services.AddTransient<BurgersService>();
+      services.AddTransient<SidesService>();
+      services.AddTransient<DrinksService>();
+      services.AddTransient<WarehousesService>();
+      services.AddTransient<ProductsService>();
+      services.AddTransient<WarehouseProductsService>();
+
+    }
+
+    private void ConfigureCors(IServiceCollection services)
+    {
+      services.AddCors(options =>
+      {
+        options.AddPolicy("CorsDevPolicy", builder =>
+              {
+                builder
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials()
+                      .WithOrigins(new string[]{
+                        "http://localhost:8080", "http://localhost:8081"
+                  });
+              });
+      });
+    }
+
+    private void ConfigureAuth(IServiceCollection services)
+    {
       services.AddAuthentication(options =>
       {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -34,45 +86,11 @@ namespace burgershack
         options.Audience = Configuration["Auth0:Audience"];
       });
 
-      services.AddCors(options =>
-      {
-        options.AddPolicy("CorsDevPolicy", builder =>
-              {
-                builder
-                        .WithOrigins(new string[]{
-                          "http://localhost:8080",
-                                "http://localhost:8081"
-                              })
-                              .AllowAnyMethod()
-                              .AllowAnyHeader()
-                              .AllowCredentials();
-              });
-      });
-
-
-      services.AddControllers();
-
-      services.AddTransient<AccountService>();
-      services.AddTransient<BurgersService>();
-      services.AddTransient<DrinksService>();
-      services.AddTransient<SidesService>();
-
-      services.AddTransient<AccountRepository>();
-      services.AddTransient<BurgersRepository>();
-      services.AddTransient<DrinksRepository>();
-      services.AddTransient<SidesRepository>();
-
-      services.AddScoped<IDbConnection>(x => CreateDbConnection());
-
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "burgershack", Version = "v1" });
-      });
     }
 
     private IDbConnection CreateDbConnection()
     {
-      string connectionString = Configuration["db:gearhost"];
+      string connectionString = Configuration["DB:gearhost"];
       return new MySqlConnection(connectionString);
     }
 
@@ -83,12 +101,16 @@ namespace burgershack
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "burgershack v1"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AmaZen v1"));
+        app.UseCors("CorsDevPolicy");
       }
+      Auth0ProviderExtension.ConfigureKeyMap(new List<string>() { "id" });
 
       app.UseHttpsRedirection();
 
       app.UseRouting();
+
+      app.UseAuthentication();
 
       app.UseAuthorization();
 

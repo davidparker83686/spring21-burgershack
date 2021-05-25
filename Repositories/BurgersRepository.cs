@@ -20,15 +20,26 @@ namespace spring21_burgershack.Repositories
       return _db.Query<Burger>(sql);
     }
     // -----------------------------------------------------------------------------------------------------
-    public Burger Create(Burger data)
+    public Burger Create(Burger newBurger)
     {
-      throw new System.NotImplementedException();
+      string sql = @"
+      INSERT INTO burgers
+      (name,cost,quantity,modifications)
+      VALUES
+      ( @Name, @Cost, @Quantity, @Modifications);
+      SELECT LAST_INSERT_ID();";
+
+      newBurger.Id = _db.ExecuteScalar<int>(sql, newBurger);
+      return newBurger;
     }
     // -----------------------------------------------------------------------------------------------------
     public Burger GetById(int id)
     {
-      string sql = "SELECT * FROM burgers WHERE id ==@Id;";
-      return _db.Query<Burger>(sql)
+      string sql = "SELECT * FROM burgers WHERE id =@id;";
+
+      // why not this ???
+      // return _db.Query<Burger>(sql)
+      return _db.QueryFirstOrDefault<Burger>(sql, new { id });
     }
     // -----------------------------------------------------------------------------------------------------
     public Burger Update(Burger data)
