@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using burgershack.Interfaces;
-
 using Microsoft.AspNetCore.Mvc;
 using spring21_burgershack.Models;
 using spring21_burgershack.Services;
@@ -11,7 +9,7 @@ namespace spring21_burgershack.Controllers
   [ApiController]
   [Route("api/[controller]")]
 
-  public class DrinksController : ControllerBase, ICodeWorksRestfulController<Drink>
+  public class DrinksController : ControllerBase
   {
     private readonly DrinksService _drinksController;
 

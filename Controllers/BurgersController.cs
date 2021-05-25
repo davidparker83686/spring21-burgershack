@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using burgershack.Interfaces;
-
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using spring21_burgershack.Models;
 using spring21_burgershack.Services;
 
@@ -69,7 +64,7 @@ namespace spring21_burgershack.Controllers
       try
       {
         // why this and not teh one i wrote and y would it be id and not int id if that wat were passing it.
-        // Burger found = _bugersService.GetById(int id);
+
         IEnumerable<Burger> burgers = _bugersService.GetById(id);
         return Ok(burgers);
       }
