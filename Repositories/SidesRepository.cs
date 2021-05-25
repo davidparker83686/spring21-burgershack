@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using burgershack.Interfaces;
 using spring21_burgershack.Models;
 
-namespace burgershack.Repositories
+namespace spring21_burgershack.Repositories
 {
   public class SidesRepository : IRepo<Side>
   {

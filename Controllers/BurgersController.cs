@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using burgershack.Interfaces;
-using burgershack.Services;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using spring21_burgershack.Models;
+using spring21_burgershack.Services;
 
-namespace burgershack.Controllers
+namespace spring21_burgershack.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class BurgersController : ControllerBase, ICodeWorksRestfulController<Burger>
+  public class BurgersController : ControllerBase
   {
     private readonly BurgersService _bugersService;
 
@@ -20,8 +21,9 @@ namespace burgershack.Controllers
     {
       _bugersService = bugersService;
     }
-
-    public ActionResult<Burger> Create()
+    // -----------------------------------------------------------------------------------------------------
+    [HttpPost]
+    public ActionResult<Burger> Create([FromBody] Burger newBurger)
     {
       try
       {
@@ -32,8 +34,9 @@ namespace burgershack.Controllers
         return BadRequest(e.Message);
       }
     }
-
-    public ActionResult<Burger> Delete()
+    // -----------------------------------------------------------------------------------------------------
+    [HttpDelete("{id}")]
+    public ActionResult<Burger> Delete(int id)
     {
       try
       {
@@ -44,7 +47,7 @@ namespace burgershack.Controllers
         return BadRequest(e.Message);
       }
     }
-
+    // -----------------------------------------------------------------------------------------------------
     [HttpGet]
     public ActionResult<IEnumerable<Burger>> Get()
     {
@@ -58,12 +61,17 @@ namespace burgershack.Controllers
         return BadRequest(e.Message);
       }
     }
+    // -----------------------------------------------------------------------------------------------------
 
-    public ActionResult<Burger> GetOne()
+    [HttpGet("{id}")]
+    public ActionResult<Burger> GetById(int id)
     {
       try
       {
-        throw new NotImplementedException();
+        // why this and not teh one i wrote and y would it be id and not int id if that wat were passing it.
+        // Burger found = _bugersService.GetById(int id);
+        IEnumerable<Burger> burgers = _bugersService.GetById(id);
+        return Ok(burgers);
       }
       catch (Exception e)
       {
@@ -71,7 +79,9 @@ namespace burgershack.Controllers
       }
     }
 
-    public ActionResult<Burger> Update()
+    // -----------------------------------------------------------------------------------------------------
+    [HttpPut("{id}")]
+    public ActionResult<Burger> Update(int id)
     {
       try
       {

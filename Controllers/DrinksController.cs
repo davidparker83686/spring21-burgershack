@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using burgershack.Interfaces;
-using burgershack.Services;
+
 using Microsoft.AspNetCore.Mvc;
 using spring21_burgershack.Models;
+using spring21_burgershack.Services;
 
-namespace burgershack.Controllers
+namespace spring21_burgershack.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]

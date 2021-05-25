@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-
-using burgershack.Repositories;
 using spring21_burgershack.Models;
+using spring21_burgershack.Repositories;
 
-namespace burgershack.Services
+namespace spring21_burgershack.Services
 {
   public class BurgersService
   {
@@ -14,16 +13,27 @@ namespace burgershack.Services
     {
       _burgersRepository = burgersRepository;
     }
+    // -----------------------------------------------------------------------------------------------------
     internal IEnumerable<Burger> GetAll()
     {
       return _burgersRepository.GetAll();
     }
-
+    // -----------------------------------------------------------------------------------------------------
     internal IEnumerable<Burger> GetByCreatorId(string id)
     {
       throw new NotImplementedException();
     }
-
+    // -----------------------------------------------------------------------------------------------------
+    internal IEnumerable<Burger> GetById(int id)
+    {
+      Burger burger = _burgersRepository.GetById(id);
+      if (burger == null)
+      {
+        throw new Exception("Invalid Burger Id");
+      }
+      return (IEnumerable<Burger>)burger;
+    }
+    // -----------------------------------------------------------------------------------------------------
 
 
 

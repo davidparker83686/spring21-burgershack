@@ -1,6 +1,4 @@
 using System.Data;
-using burgershack.Repositories;
-using burgershack.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
+using spring21_burgershack.Repositories;
 using spring21_burgershack.Services;
 
 namespace burgershack
@@ -52,11 +51,13 @@ namespace burgershack
 
 
       services.AddControllers();
-      services.AddTransient<AccountsService>();
+
+      services.AddTransient<AccountService>();
       services.AddTransient<BurgersService>();
       services.AddTransient<DrinksService>();
       services.AddTransient<SidesService>();
-      services.AddTransient<AccountsRepository>();
+
+      services.AddTransient<AccountRepository>();
       services.AddTransient<BurgersRepository>();
       services.AddTransient<DrinksRepository>();
       services.AddTransient<SidesRepository>();

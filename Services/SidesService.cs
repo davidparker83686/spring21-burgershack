@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using spring21_burgershack.Models;
 
-namespace burgershack.Services
+namespace spring21_burgershack.Services
 {
   public class SidesService
   {

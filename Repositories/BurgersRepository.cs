@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Data;
 using burgershack.Interfaces;
-
 using Dapper;
 using spring21_burgershack.Models;
 
-namespace burgershack.Repositories
+namespace spring21_burgershack.Repositories
 {
-  public class BurgersRepository : IRepo<Burger>
+  public class BurgersRepository
   {
 
     private readonly IDbConnection _db;
@@ -15,22 +14,24 @@ namespace burgershack.Repositories
     {
       _db = db;
     }
-
+    // -----------------------------------------------------------------------------------------------------
     public IEnumerable<Burger> GetAll()
     {
       string sql = "SELECT * FROM burgers";
       return _db.Query<Burger>(sql);
     }
+    // -----------------------------------------------------------------------------------------------------
     public Burger Create(Burger data)
     {
       throw new System.NotImplementedException();
     }
-
+    // -----------------------------------------------------------------------------------------------------
     public Burger GetById(int id)
     {
-      throw new System.NotImplementedException();
+      string sql = "SELECT * FROM burgers WHERE id ==@Id;";
+      return _db.Query<Burger>(sql)
     }
-
+    // -----------------------------------------------------------------------------------------------------
     public Burger Update(Burger data)
     {
       throw new System.NotImplementedException();

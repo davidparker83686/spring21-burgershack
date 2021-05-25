@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using burgershack.Services;
 using CodeWorks.Auth0Provider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,31 +12,33 @@ namespace spring21_burgershack.Controllers
   [ApiController]
   [Route("[controller]")]
   // TODO[epic=Auth] Adds authguard to all routes on the whole controller
-  [Authorize]
+
   public class AccountController : ControllerBase
   {
-    private readonly AccountsService _accountsService;
+    private readonly AccountService _accountService;
     private readonly BurgersService _burgersService;
     private readonly DrinksService _drinksService;
     private readonly SidesService _sidesService;
 
-    public AccountController(AccountsService accountsService, BurgersService burgersService, DrinksService drinksService, SidesService sidesService)
+    public AccountController(AccountService accountService, BurgersService burgersService, DrinksService drinksService, SidesService sidesService)
     {
-      _accountsService = accountsService;
+      _accountService = accountService;
       _burgersService = burgersService;
       _drinksService = drinksService;
       _sidesService = sidesService;
     }
 
     [HttpGet]
+    // [Authorize]
     public async Task<ActionResult<Account>> Get()
     {
       try
       {
         // TODO[epic=Auth] Replaces req.userinfo
         // IF YOU EVER NEED THE ACTIVE USERS INFO THIS IS HOW YOU DO IT (FROM AUTH0)
+
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        Account currentUser = _accountsService.GetOrCreateAccount(userInfo);
+        Account currentUser = _accountService.GetOrCreateAccount(userInfo);
         return Ok(currentUser);
       }
       catch (Exception error)
@@ -47,6 +48,7 @@ namespace spring21_burgershack.Controllers
     }
 
     [HttpGet("burgers")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Burger>>> GetMyBurgers()
     {
       // TODO[epic=Auth] Replaces req.userinfo
@@ -57,6 +59,7 @@ namespace spring21_burgershack.Controllers
 
     }
     [HttpGet("drinks")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Drink>>> GetMyDrinks()
     {
       // TODO[epic=Auth] Replaces req.userinfo
@@ -67,6 +70,7 @@ namespace spring21_burgershack.Controllers
 
     }
     [HttpGet("sides")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Side>>> GetMySides()
     {
       // TODO[epic=Auth] Replaces req.userinfo
