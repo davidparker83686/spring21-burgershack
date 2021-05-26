@@ -40,6 +40,17 @@ namespace spring21_burgershack.Services
       return (Burger)burger;
     }
 
+    internal void Delete(int apple, string id2)
+    {
+      Burger burger = GetById(apple);
+      if (!_burgersRepository.Delete(apple))
+      {
+        throw new Exception("Something has gone terribly wrong");
+      }
+    }
+
+
+
     // -----------------------------------------------------------------------------------------------------
     internal Burger Update(Burger update)
     {

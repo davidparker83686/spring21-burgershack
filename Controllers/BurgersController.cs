@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using burgershack.Interfaces;
+using CodeWorks.Auth0Provider;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using spring21_burgershack.Models;
 using spring21_burgershack.Services;
@@ -13,20 +15,21 @@ namespace spring21_burgershack.Controllers
   [Route("api/[controller]")]
   public class BurgersController : ControllerBase
   {
-    private readonly BurgersService _bugersService;
+    private readonly BurgersService _burgersService;
 
     public BurgersController(BurgersService bugersService)
     {
-      _bugersService = bugersService;
+      _burgersService = bugersService;
     }
     // -----------------------------------------------------------------------------------------------------
     [HttpPost]
+
     public ActionResult<Burger> Create([FromBody] Burger newBurger)
     {
       try
       {
         // newBurger.CreatorId = "fixthis later";
-        Burger burgers = _bugersService.Create(newBurger);
+        Burger burgers = _burgersService.Create(newBurger);
 
         return Ok(burgers);
       }
@@ -37,11 +40,16 @@ namespace spring21_burgershack.Controllers
     }
     // -----------------------------------------------------------------------------------------------------
     [HttpDelete("{id}")]
-    public ActionResult<Burger> Delete(int id)
+    [Authorize]
+    public async Task<ActionResult<Burger>> Delete(int id)
     {
       try
       {
-        throw new NotImplementedException();
+        // TODO[epic=Auth] Get the user info to set the creatorID
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        // safety to make sure an account exists for that user before CREATE-ing stuff.
+        _burgersService.Delete(id, userInfo.Id);
+        return Ok("Deleted");
       }
       catch (Exception e)
       {
@@ -54,7 +62,7 @@ namespace spring21_burgershack.Controllers
     {
       try
       {
-        IEnumerable<Burger> burgers = _bugersService.GetAll();
+        IEnumerable<Burger> burgers = _burgersService.GetAll();
         return Ok(burgers);
       }
       catch (Exception e)
@@ -69,7 +77,7 @@ namespace spring21_burgershack.Controllers
     {
       try
       {
-        Burger burgers = _bugersService.GetById(id);
+        Burger burgers = _burgersService.GetById(id);
         return Ok(burgers);
       }
       catch (Exception e)
@@ -80,12 +88,13 @@ namespace spring21_burgershack.Controllers
 
     // -----------------------------------------------------------------------------------------------------
     [HttpPut("{id}")]
+    // [Authorize]
     public ActionResult<Burger> Update(int id, [FromBody] Burger update)
     {
       try
       {
         update.Id = id;
-        Burger updated = _bugersService.Update(update);
+        Burger updated = _burgersService.Update(update);
         return Ok(updated);
       }
       catch (Exception e)

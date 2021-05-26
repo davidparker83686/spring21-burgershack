@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using Dapper;
@@ -46,11 +47,18 @@ namespace spring21_burgershack.Repositories
       SET
         name = @Name,
         cost = @Cost,
-        quantity = @Quantity
-        modifications=@Modifications
-      WHERE id=@Id
+        quantity = @Quantity,
+        modifications = @Modifications
+      WHERE id = @Id
       ";
       int affectedRows = _db.Execute(sql, original);
+      return affectedRows == 1;
+    }
+
+    internal bool Delete(object id)
+    {
+      string sql = "DELETE FROM burgers WHERE id = @id LIMIT 1";
+      int affectedRows = _db.Execute(sql, new { id });
       return affectedRows == 1;
     }
   }
