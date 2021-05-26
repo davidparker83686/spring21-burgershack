@@ -39,10 +39,21 @@ namespace spring21_burgershack.Services
       }
       return (Burger)burger;
     }
+
     // -----------------------------------------------------------------------------------------------------
-
-
-
-    //ALL THE OTHER FUNCTION WILL GO HERE
+    internal Burger Update(Burger update)
+    {
+      Burger original = GetById(update.Id);
+      original.Name = update.Name.Length > 0 ? update.Name : original.Name;
+      original.Cost = update.Cost > 0 ? update.Cost : original.Cost;
+      original.Quantity = update.Quantity > 0 ? update.Quantity : original.Quantity;
+      original.Modifications = update.Modifications.Length > 0 ? update.Modifications : original.Modifications;
+      if (_burgersRepository.Update(original))
+      {
+        return original;
+      }
+      throw new Exception("Something Went Wrong???");
+    }
   }
+
 }

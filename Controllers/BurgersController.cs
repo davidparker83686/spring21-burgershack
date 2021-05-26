@@ -80,11 +80,13 @@ namespace spring21_burgershack.Controllers
 
     // -----------------------------------------------------------------------------------------------------
     [HttpPut("{id}")]
-    public ActionResult<Burger> Update(int id)
+    public ActionResult<Burger> Update(int id, [FromBody] Burger update)
     {
       try
       {
-        throw new NotImplementedException();
+        update.Id = id;
+        Burger updated = _bugersService.Update(update);
+        return Ok(updated);
       }
       catch (Exception e)
       {

@@ -36,15 +36,22 @@ namespace spring21_burgershack.Repositories
     public Burger GetById(int id)
     {
       string sql = "SELECT * FROM burgers WHERE id =@id;";
-
-      // why not this ???
-      // return _db.Query<Burger>(sql)
       return _db.QueryFirstOrDefault<Burger>(sql, new { id });
     }
     // -----------------------------------------------------------------------------------------------------
-    public Burger Update(Burger data)
+    internal bool Update(Burger original)
     {
-      throw new System.NotImplementedException();
+      string sql = @"
+      UPDATE burgers
+      SET
+        name = @Name,
+        cost = @Cost,
+        quantity = @Quantity
+        modifications=@Modifications
+      WHERE id=@Id
+      ";
+      int affectedRows = _db.Execute(sql, original);
+      return affectedRows == 1;
     }
   }
 
